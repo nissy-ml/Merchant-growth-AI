@@ -196,8 +196,8 @@ pending_total = int(pending_payments["amount"].sum())
 # Sidebar
 # -----------------------------
 with st.sidebar:
-    st.markdown("## ✦ MerchantAI")
-    st.caption("AI business copilot for Paytm merchants")
+    st.markdown("## ✦ Merchmatrix AI")
+    st.caption("Merchant Growth AI • AI business copilot for Paytm merchants")
     st.markdown(
         '<span class="badge"><span class="live-dot"></span>LIVE DEMO MODE</span>',
         unsafe_allow_html=True,
@@ -207,6 +207,16 @@ with st.sidebar:
     merchant = st.selectbox("Merchant", [STORE_NAME, "Ravi Cafe", "Demo Merchant"])
     st.caption(STORE_LOCATION if merchant == STORE_NAME else "Bhimavaram, Andhra Pradesh")
 
+    st.divider()
+    st.markdown("**TEAM • MERCHMATRIX AI**")
+    st.markdown("👩🏻‍💻 **Nissy Kunche**")
+    st.markdown("👩🏻‍💻 **Beulah Rani Oleti**")
+    st.caption("2-member team")
+    st.divider()
+    st.markdown("**TEAM • MERCHMATRIX AI**")
+    st.markdown("👩🏻‍💻 **Nissy Kunche**")
+    st.markdown("👩🏻‍💻 **Beulah Rani Oleti**")
+    st.caption("2-member team")
     st.divider()
     st.markdown("**AI teammates**")
     st.markdown("🟢 💳 Billing AI — active")
@@ -472,4 +482,113 @@ elif section == "Customers":
 
     customer_data = pd.DataFrame([
         ["Ramesh Traders", 12400, 8, "High"],
-        ["Anitha Stores", 98
+        ["Anitha Stores", 9800, 7, "High"],
+        ["Venkat & Co.", 6200, 5, "Medium"],
+        ["Lakshmi Mart", 4700, 4, "Medium"],
+    ], columns=["Customer", "Revenue", "Orders", "Value"])
+
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.dataframe(customer_data, use_container_width=True, hide_index=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ============================================================
+# PRODUCTS
+# ============================================================
+elif section == "Products":
+    st.markdown("## 📦 Product Intelligence")
+    st.caption("Fast movers, slow movers and stock risk in one view.")
+
+    product_data = pd.DataFrame([
+        ["Rice (25kg bags)", 4, 20, "High", "Reorder now"],
+        ["Cooking Oil (5L)", 9, 15, "Medium", "Reorder soon"],
+        ["Sugar (1kg packs)", 30, 0, "Low", "Healthy"],
+        ["Filter Coffee", 12, 0, "Medium", "Sales declining"],
+        ["Ice Cream Sundae", 18, 0, "Low", "Sales growing"],
+    ], columns=["Product", "Stock", "Suggested reorder", "Risk", "AI action"])
+
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.dataframe(product_data, use_container_width=True, hide_index=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ============================================================
+# AI COPILOT
+# ============================================================
+elif section == "AI Copilot":
+    st.markdown("## 🤖 Merchant AI Copilot")
+    st.caption("Ask the business questions that normally require manual analysis.")
+
+    st.markdown('<div class="ai-box">', unsafe_allow_html=True)
+    question = st.text_input(
+        "Ask your business copilot",
+        placeholder="e.g. What should I do to increase sales this weekend?",
+    )
+    if question:
+        q = question.lower()
+        if "weekend" in q or "sales" in q:
+            answer = "Your strongest signal is Saturday demand. I would test a small weekend bundle for slow-moving products and promote it during the 18:00–20:00 peak window."
+        elif "stock" in q or "inventory" in q:
+            answer = "Rice and cooking oil are the immediate inventory risks. Reordering them now can reduce the chance of losing sales due to stock-outs."
+        elif "payment" in q or "collect" in q:
+            answer = f"You have ₹{pending_total:,} pending across 3 customers. Anitha Stores is due in 1 day, so that reminder has the highest urgency."
+        else:
+            answer = "Based on the current demo data, the biggest opportunities are weekend conversion, Wednesday recovery and inventory protection."
+        st.markdown(f"**AI:** {answer}")
+    else:
+        st.markdown("Try: **“How can I increase weekend sales?”**")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.write("")
+    st.markdown("### Suggested questions")
+    qs = st.columns(3)
+    qs[0].info("💰 How can I increase sales?")
+    qs[1].info("📦 What should I reorder?")
+    qs[2].info("💳 Which payment should I follow up first?")
+
+# ============================================================
+# CAMPAIGNS
+# ============================================================
+elif section == "Campaigns":
+    st.markdown("## 🎯 Campaign Studio")
+    st.caption("Turn an AI recommendation into a merchant-ready campaign.")
+
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown('<span class="pill pill-green">AI GENERATED</span>', unsafe_allow_html=True)
+    st.markdown("### Weekend Slow-Mover Bundle")
+    st.caption("Created from recent sales patterns")
+    c1, c2 = st.columns(2)
+    c1.markdown("**Offer**\n\n5% discount on selected slow movers")
+    c2.markdown("**Target**\n\nSaturday • 18:00–20:00")
+    c3, c4, c5 = st.columns(3)
+    c3.metric("Estimated uplift", "₹2.3K–₹3.1K")
+    c4.metric("Margin guardrail", "35%")
+    c5.metric("Risk", "Low")
+    if st.button("🚀 Activate campaign", key="activate_campaign"):
+        st.session_state.campaign_created = True
+        st.success("Campaign activated in demo mode.", icon="✓")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ============================================================
+# GLOBAL ACTION CENTER
+# ============================================================
+st.write("")
+st.markdown('<div class="card">', unsafe_allow_html=True)
+st.markdown('<div class="card-title">⚡ Action Center</div>', unsafe_allow_html=True)
+st.markdown('<div class="card-sub">Three actions recommended from your current merchant signals.</div>', unsafe_allow_html=True)
+
+actions = [
+    ("1", "Low Wednesday sales", "Test a Wednesday-specific promotion or bundle."),
+    ("2", "Inventory risk", "Reorder rice and cooking oil before stock-out."),
+    ("3", "Pending collection", f"Follow up on ₹{pending_total:,} across 3 invoices."),
+]
+for num, title, desc in actions:
+    left, mid, right = st.columns([.4, 4, 1])
+    left.markdown(f"**{num}**")
+    mid.markdown(f"**{title}**<br><span style='color:#94A3B8'>{desc}</span>", unsafe_allow_html=True)
+    right.button("Review", key=f"review_{num}")
+
+st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown(
+    '<div class="footer">Merchmatrix AI • Nissy Kunche & Beulah Rani Oleti • Merchant Growth AI • Working prototype</div>',
+    unsafe_allow_html=True,
+)
