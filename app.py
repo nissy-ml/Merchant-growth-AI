@@ -196,7 +196,7 @@ pending_total = int(pending_payments["amount"].sum())
 # Sidebar
 # -----------------------------
 with st.sidebar:
-    st.markdown("## ✦ Merchmatrix AI")
+    st.markdown("## ✦ Merchmatrix ")
     st.caption("Merchant Growth AI • AI business copilot for Paytm merchants")
     st.markdown(
         '<span class="badge"><span class="live-dot"></span>LIVE DEMO MODE</span>',
